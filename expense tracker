@@ -1,0 +1,90 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Expense {
+    private String category;
+    private double amount;
+    private String date; // simple String date, could use LocalDate for extra credit
+
+    public Expense(String category, double amount, String date) {
+        this.category = category;
+        this.amount = amount;
+        this.date = date;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    @Override
+    public String toString() {
+        return date + " | " + category + " | $" + amount;
+    }
+}
+
+public class ExpenseTracker {
+    private static ArrayList<Expense> expenses = new ArrayList<>();
+    private static Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        int choice;
+        do {
+            System.out.println("\n=== Personal Expense Tracker ===");
+            System.out.println("1. Add Expense");
+            System.out.println("2. View All Expenses");
+            System.out.println("3. View Total Spent");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+            sc.nextLine(); // consume newline
+
+            switch (choice) {
+                case 1 -> addExpense();
+                case 2 -> viewExpenses();
+                case 3 -> viewTotal();
+                case 4 -> System.out.println("Exiting... Goodbye!");
+                default -> System.out.println("Invalid choice. Try again!");
+            }
+        } while (choice != 4);
+    }
+
+    private static void addExpense() {
+        System.out.print("Enter category (e.g. Food, Travel, etc.): ");
+        String category = sc.nextLine();
+        System.out.print("Enter amount: $");
+        double amount = sc.nextDouble();
+        sc.nextLine();
+        System.out.print("Enter date (e.g. 2025-10-26): ");
+        String date = sc.nextLine();
+
+        expenses.add(new Expense(category, amount, date));
+        System.out.println("Expense added successfully!");
+    }
+
+    private static void viewExpenses() {
+        if (expenses.isEmpty()) {
+            System.out.println("No expenses recorded yet.");
+            return;
+        }
+        System.out.println("\n--- Expense List ---");
+        for (Expense e : expenses) {
+            System.out.println(e);
+        }
+    }
+
+    private static void viewTotal() {
+        double total = 0;
+        for (Expense e : expenses) {
+            total += e.getAmount();
+        }
+        System.out.println("Total spent: $" + total);
+    }
+}
